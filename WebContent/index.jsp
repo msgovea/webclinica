@@ -94,7 +94,7 @@
  	Calendar cal = Calendar.getInstance();
  	Boolean valido = true;
  	String validoRec[] = new String[3];
- 	String botao = "default";
+ 	String botao = "logar";
     if (request.getParameter("botao") != null){
     	botao = request.getParameter("botao");
    	}
@@ -137,7 +137,7 @@
 	        	usr.setLogin(login);
 	        	usr.setSenha(password);
 	        	usr.setNome("Mateus Sauer");
-	        	Teste.user.setNome("Mateus Sauer Govêa sei la da silva não sei");
+	        	Teste.user.setNome("Mateus Sauer Govêa");
 	        	//out.println("<script>alert(\"" + Teste.user.getNome() + "\");</script>");
 	        	session.setAttribute("login", login);
 		        session.setAttribute("senha", password);
@@ -220,7 +220,6 @@
         <div class="mdl-layout--large-screen-only mdl-layout__header-row">
         </div>
         <div class="mdl-layout__tab-bar mdl-js-ripple-effect mdl-color--primary-dark">
-          <a href="#default" 	class="mdl-layout__tab <% if(botao.equals("default")) 	out.print("is-active");%>">Principal</a>
           <a href="#logar" 		class="mdl-layout__tab <% if(botao.equals("logar"))   	out.print("is-active");%>">Logar	</a>
           <a href="#cadastro" 	class="mdl-layout__tab <% if(botao.equals("cadastro"))	out.print("is-active");%>">Cadastro	</a>
           <a href="#recsenha" 	class="mdl-layout__tab <% if(botao.equals("recuperar senha"))	out.print("is-active");%>">Recuperar Senha</a>
@@ -228,81 +227,6 @@
       </header>
       
       <main class="mdl-layout__content">
-        <div class="mdl-layout__tab-panel <%if (botao.equals("default"))out.print("is-active");%>" id="default">
-          <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
-            <header class="section__play-btn mdl-cell mdl-cell--3-col-desktop mdl-cell--2-col-tablet mdl-cell--4-col-phone mdl-color--teal-100 mdl-color-text--white">
-              <i class="material-icons">play_circle_filled</i>
-            </header>
-            <div class="mdl-card mdl-cell mdl-cell--9-col-desktop mdl-cell--6-col-tablet mdl-cell--4-col-phone">
-              <div class="mdl-card__supporting-text">
-                <h4>Features</h4>
-                Dolore ex deserunt aute fugiat aute nulla ea sunt aliqua nisi cupidatat eu. Nostrud in laboris labore nisi amet do dolor eu fugiat consectetur elit cillum esse.
-              </div>
-              <div class="mdl-card__actions">
-                <a href="#" class="mdl-button">Read our features</a>
-              </div>
-            </div>
-          </section>
-          <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
-            <div class="mdl-card mdl-cell mdl-cell--12-col">
-              <div class="mdl-card__supporting-text mdl-grid mdl-grid--no-spacing">
-                <h4 class="mdl-cell mdl-cell--12-col">Details</h4>
-                <div class="section__circle-container mdl-cell mdl-cell--2-col mdl-cell--1-col-phone">
-                  <div class="section__circle-container__circle mdl-color--primary"></div>
-                </div>
-                <div class="section__text mdl-cell mdl-cell--10-col-desktop mdl-cell--6-col-tablet mdl-cell--3-col-phone">
-                  <h5>Lorem ipsum dolor sit amet</h5>
-                  Dolore ex deserunt aute fugiat aute nulla ea sunt aliqua nisi cupidatat eu. Duis nulla tempor do aute et eiusmod velit exercitation nostrud quis <a href="#">proident minim</a>.
-                </div>
-                <div class="section__circle-container mdl-cell mdl-cell--2-col mdl-cell--1-col-phone">
-                  <div class="section__circle-container__circle mdl-color--primary"></div>
-                </div>
-                <div class="section__text mdl-cell mdl-cell--10-col-desktop mdl-cell--6-col-tablet mdl-cell--3-col-phone">
-                  <h5>Lorem ipsum dolor sit amet</h5>
-                  Dolore ex deserunt aute fugiat aute nulla ea sunt aliqua nisi cupidatat eu. Duis nulla tempor do aute et eiusmod velit exercitation nostrud quis <a href="#">proident minim</a>.
-                </div>
-                <div class="section__circle-container mdl-cell mdl-cell--2-col mdl-cell--1-col-phone">
-                  <div class="section__circle-container__circle mdl-color--primary"></div>
-                </div>
-                <div class="section__text mdl-cell mdl-cell--10-col-desktop mdl-cell--6-col-tablet mdl-cell--3-col-phone">
-                  <h5>Lorem ipsum dolor sit amet</h5>
-                  Dolore ex deserunt aute fugiat aute nulla ea sunt aliqua nisi cupidatat eu. Duis nulla tempor do aute et eiusmod velit exercitation nostrud quis <a href="#">proident minim</a>.
-                </div>
-              </div>
-              <div class="mdl-card__actions">
-                <a href="#" class="mdl-button">Read our features</a>
-              </div>
-            </div>
-          </section>
-          <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
-            <div class="mdl-card mdl-cell mdl-cell--12-col">
-              <div class="mdl-card__supporting-text">
-                <h4>Technology</h4>
-                Dolore ex deserunt aute fugiat aute nulla ea sunt aliqua nisi cupidatat eu. Nostrud in laboris labore nisi amet do dolor eu fugiat consectetur elit cillum esse. Pariatur occaecat nisi laboris tempor laboris eiusmod qui id Lorem esse commodo in. Exercitation aute dolore deserunt culpa consequat elit labore incididunt elit anim.
-              </div>
-              <div class="mdl-card__actions">
-                <a href="#logar" class="mdl-button">Read our features</a>
-              </div>
-            </div>
-          </section>
-          <section class="section--footer mdl-color--white mdl-grid">
-            <div class="section__circle-container mdl-cell mdl-cell--2-col mdl-cell--1-col-phone">
-              <img src="images/user.jpg" class="demo-avatar">
-            </div>
-            <div class="section__text mdl-cell mdl-cell--2-col-desktop mdl-cell--6-col-tablet mdl-cell--3-col-phone">
-              <h5>Mateus Sauer Govêa</h5>
-              Qui sint ut et qui nisi cupidatat. Reprehenderit nostrud proident officia exercitation anim et pariatur ex.
-            </div>
-            <div class="section__circle-container mdl-cell mdl-cell--2-col mdl-cell--1-col-phone">
-              <img src="images/user.jpg" class="demo-avatar">
-            </div>
-            <div class="section__text mdl-cell mdl-cell--2-col-desktop mdl-cell--6-col-tablet mdl-cell--3-col-phone">
-              <h5>Wagner José Luz</h5>
-              Qui sint ut et qui nisi cupidatat. Reprehenderit nostrud proident officia exercitation anim et pariatur ex.
-            </div>
-          </section>
-        </div>
-        
         
         <div class="mdl-layout__tab-panel <%if (botao.equals("logar"))out.print("is-active");%>" id="logar">
         

@@ -468,14 +468,3 @@
                 </div>
 
                 <!-- footer content -->
-                <footer>
-                    <div class="">
-                        <p class="pull-right">Clinica Health Care |
-                            <span class="lead">Desenvolvido por: Mateus Sauer Govêa e Wagner J. Luz</span>
-                        </p>
-                    </div>
-                    <div class="clearfix"></div>
-                </footer>
-                <!-- /footer content -->
-
-            </div>

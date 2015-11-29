@@ -4,7 +4,7 @@
 				bd.*,
 				conexao.Conexao,
 				logicalView.*,
-				model.UsuarioDAO,
+				model.*,
 				java.util.*"
 %>
 <%@include file="sessao.jsp"%>
@@ -16,7 +16,9 @@
 	if (nome.length() > 16) {
 		nome = nome.substring(0, 14) + "...";
 	}
-
+	
+	boolean funcionario = Teste.user.isFuncionario();
+	
 %>
 
 <!DOCTYPE html>
@@ -29,7 +31,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>HealthCare | </title>
+    <title>HealthCare</title>
 
     <!-- Bootstrap core CSS -->
 
@@ -44,7 +46,9 @@
     <link href="css/icheck/flat/green.css" rel="stylesheet">
     <link href="css/floatexamples.css" rel="stylesheet" />
 
-    <script src="js/jquery.min.js"></script
+	<link href="css/datatables/tools/css/dataTables.tableTools.css" rel="stylesheet">
+
+    <script src="js/jquery.min.js"></script>
 
 </head>
 
@@ -60,7 +64,7 @@
                 <div class="left_col scroll-view">
 
                     <div class="navbar nav_title" style="border: 0;">
-                        <a href="index.html" class="site_title"><span><img src="../images/logo.png" class="demo-logo"></span></a>
+                        <a href="index.jsp" class="site_title"><span><img src="../images/logo.png" class="demo-logo"></span></a>
                     </div>
                     <div class="clearfix"></div>
 
@@ -84,73 +88,41 @@
 
                         <div class="menu_section">
                             <ul class="nav side-menu">
-                                <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
+                                <li><a href="?pagina=conteudo"><i class="fa fa-home"></i>Início</a></li>
+                                <li><a><i class="fa fa-edit"></i> Consultas <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu" style="display: none">
-                                        <li><a href="?pagina=conteudo" > Dashboard </a>
+                                        <li><a href="?pagina=consulta">Marcar Consulta</a>
                                         </li>
-                                        <li><a href="?pagina=conteudo2">Dashboard2</a>
+                                        <li><a href="form_advanced.html">Desmarcar Consulta</a>
                                         </li>
-                                        <li><a href="index3.html">Dashboard3</a>
+                                        <li><a href="form_validation.html">Pesquisar Consulta</a>
                                         </li>
                                     </ul>
                                 </li>
-                                <li><a><i class="fa fa-edit"></i> Forms <span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu" style="display: none">
-                                        <li><a href="form.html">General Form</a>
-                                        </li>
-                                        <li><a href="form_advanced.html">Advanced Components</a>
-                                        </li>
-                                        <li><a href="form_validation.html">Form Validation</a>
-                                        </li>
-                                        <li><a href="form_wizards.html">Form Wizard</a>
-                                        </li>
-                                        <li><a href="form_upload.html">Form Upload</a>
-                                        </li>
-                                        <li><a href="form_buttons.html">Form Buttons</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li><a><i class="fa fa-desktop"></i> UI Elements <span class="fa fa-chevron-down"></span></a>
+                                <li><a><i class="fa fa-desktop"></i> Resultados Consultas <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu" style="display: none">
                                         <li><a href="general_elements.html">General Elements</a>
                                         </li>
                                         <li><a href="media_gallery.html">Media Gallery</a>
                                         </li>
-                                        <li><a href="typography.html">Typography</a>
+
+                                    </ul>
+                                </li>
+                                <li><a><i class="fa fa-cog"></i> Administrativo <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu" style="display: none">
+                                        <li><a href="?pagina=usuarios2">Contas Ativas</a>
                                         </li>
-                                        <li><a href="icons.html">Icons</a>
-                                        </li>
-                                        <li><a href="glyphicons.html">Glyphicons</a>
-                                        </li>
-                                        <li><a href="widgets.html">Widgets</a>
-                                        </li>
-                                        <li><a href="invoice.html">Invoice</a>
-                                        </li>
-                                        <li><a href="inbox.html">Inbox</a>
-                                        </li>
-                                        <li><a href="calender.html">Calender</a>
+                                        <li><a href="?pagina=usuarios">Contas Inativas</a>
                                         </li>
                                     </ul>
                                 </li>
-                                <li><a><i class="fa fa-table"></i> Tables <span class="fa fa-chevron-down"></span></a>
+                                <li><a><i class="fa fa-user"></i> Perfil <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu" style="display: none">
-                                        <li><a href="tables.html">Tables</a>
+                                        <li><a href="?pagina=alterarDados">Editar Perfil</a>
                                         </li>
-                                        <li><a href="tables_dynamic.html">Table Dynamic</a>
+                                        <li><a href="index.jsp?pagina=excluirPerfil">Excluir Perfil</a>
                                         </li>
-                                    </ul>
-                                </li>
-                                <li><a><i class="fa fa-bar-chart-o"></i> Data Presentation <span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu" style="display: none">
-                                        <li><a href="chartjs.html">Chart JS</a>
-                                        </li>
-                                        <li><a href="chartjs2.html">Chart JS2</a>
-                                        </li>
-                                        <li><a href="morisjs.html">Moris JS</a>
-                                        </li>
-                                        <li><a href="echarts.html">ECharts </a>
-                                        </li>
-                                        <li><a href="other_charts.html">Other Charts </a>
+                                        <li><a href="other_charts.html">Sair</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -175,95 +147,19 @@
                         <ul class="nav navbar-nav navbar-right">
                             <li class="">
                                 <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                    <img src="images/user.png" alt="">John Doe
+                                    <img src="images/user.png" alt=""><%= nome %>
                                     <span class=" fa fa-angle-down"></span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-usermenu animated fadeInDown pull-right">
-                                    <li><a href="javascript:;">  Profile</a>
+                                    <li><a href="?pagina=alterarDados">  Editar Perfil</a>
                                     </li>
                                     <li>
                                         <a href="javascript:;">
-                                            <span class="badge bg-red pull-right">50%</span>
-                                            <span>Settings</span>
+                                            <span class="badge bg-red pull-right">DEFINITIVO</span>
+                                            <span>Excluir Perfil</span>
                                         </a>
                                     </li>
-                                    <li>
-                                        <a href="javascript:;">Help</a>
-                                    </li>
-                                    <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
-                                    </li>
-                                </ul>
-                            </li>
-
-                            <li role="presentation" class="dropdown">
-                                <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
-                                    <i class="fa fa-envelope-o"></i>
-                                    <span class="badge bg-green">6</span>
-                                </a>
-                                <ul id="menu1" class="dropdown-menu list-unstyled msg_list animated fadeInDown" role="menu">
-                                    <li>
-                                        <a>
-                                            <span class="image">
-                                        <img src="images/img.jpg" alt="Profile Image" />
-                                    </span>
-                                            <span>
-                                        <span>John Smith</span>
-                                            <span class="time">3 mins ago</span>
-                                            </span>
-                                            <span class="message">
-                                        Film festivals used to be do-or-die moments for movie makers. They were where... 
-                                    </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a>
-                                            <span class="image">
-                                        <img src="images/img.jpg" alt="Profile Image" />
-                                    </span>
-                                            <span>
-                                        <span>John Smith</span>
-                                            <span class="time">3 mins ago</span>
-                                            </span>
-                                            <span class="message">
-                                        Film festivals used to be do-or-die moments for movie makers. They were where... 
-                                    </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a>
-                                            <span class="image">
-                                        <img src="images/img.jpg" alt="Profile Image" />
-                                    </span>
-                                            <span>
-                                        <span>John Smith</span>
-                                            <span class="time">3 mins ago</span>
-                                            </span>
-                                            <span class="message">
-                                        Film festivals used to be do-or-die moments for movie makers. They were where... 
-                                    </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a>
-                                            <span class="image">
-                                        <img src="images/img.jpg" alt="Profile Image" />
-                                    </span>
-                                            <span>
-                                        <span>John Smith</span>
-                                            <span class="time">3 mins ago</span>
-                                            </span>
-                                            <span class="message">
-                                        Film festivals used to be do-or-die moments for movie makers. They were where... 
-                                    </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <div class="text-center">
-                                            <a>
-                                                <strong>See All Alerts</strong>
-                                                <i class="fa fa-angle-right"></i>
-                                            </a>
-                                        </div>
+                                    <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i> Sair</a>
                                     </li>
                                 </ul>
                             </li>
@@ -282,18 +178,42 @@
             	<%@include file="conteudo.jsp" %>
             	<% break;
             	
+            	case "alterarDados": %>
+            	<%@include file="alterarDados.jsp" %>
+            	<% break;
+            	
+            	case "excluirPerfil": %>
+            	<%@include file="excluirPerfil.jsp" %>
+            	<% break;
+            	
             	case "conteudo2": %>
             	<%@include file="conteudo2.jsp" %>
             	<% break;
+
+            	case "usuarios": %>
+            	<%@include file="usuarios.jsp" %>
+            	<% break;
+            	
+            	case "usuarios2": %>
+            	<%@include file="usuarios2.jsp" %>
+            	<% break;	
             	
             	default: %>
             	<%@include file="conteudo.jsp" %>
             	<% break;
            	} %>
+           	<footer>
+                <div class="">
+                    <p class="pull-right">Desenvolvido por Mateus Sauer Govêa e Wagner J. Luz | Clinica HealthCare
+                    </p>
+                </div>
+                <div class="clearfix"></div>
+            </footer>
+            <!-- /footer content -->
+                
+            </div>
             <!-- /page content -->
         </div>
-
-
     </div>
 
     <div id="custom_notifications" class="custom-notifications dsp_none">
@@ -333,6 +253,61 @@
     <script type="text/javascript" src="js/flot/jquery.flot.resize.js"></script>
 
     <!-- flot -->
+    
+    <script src="js/datatables/js/jquery.dataTables.js"></script>
+    <script src="js/datatables/tools/js/dataTables.tableTools.js"></script>
+    
+    
+    <script>
+            $(document).ready(function () {
+                $('input.tableflat').iCheck({
+                    checkboxClass: 'icheckbox_flat-green',
+                    radioClass: 'iradio_flat-green'
+                });
+            });
+
+            var asInitVals = new Array();
+            $(document).ready(function () {
+                var oTable = $('#example').dataTable({
+                    "oLanguage": {
+                        "sSearch": "Busque nas colunas:"
+                    },
+                    "aoColumnDefs": [
+                        {
+                            'bSortable': false,
+                            'aTargets': [0]
+                        } //disables sorting for column one
+            ],
+                    'iDisplayLength': 12,
+                    "sPaginationType": "full_numbers",
+                    "dom": 'T<"clear">lfrtip',
+                    "tableTools": {
+                        "sSwfPath": "<?php echo base_url('assets2/js/Datatables/tools/swf/copy_csv_xls_pdf.swf'); ?>"
+                    }
+                });
+                $("tfoot input").keyup(function () {
+                    /* Filter on the column based on the index of this element's parent <th> */
+                    oTable.fnFilter(this.value, $("tfoot th").index($(this).parent()));
+                });
+                $("tfoot input").each(function (i) {
+                    asInitVals[i] = this.value;
+                });
+                $("tfoot input").focus(function () {
+                    if (this.className == "search_init") {
+                        this.className = "";
+                        this.value = "";
+                    }
+                });
+                $("tfoot input").blur(function (i) {
+                    if (this.value == "") {
+                        this.className = "search_init";
+                        this.value = asInitVals[$("tfoot input").index(this)];
+                    }
+                });
+            });
+        </script>
+        
+        
     <script type="text/javascript">
         //define chart clolors ( you maybe add more colors if you want or flot will add it automatic )
         var chartColours = ['#96CA59', '#3F97EB', '#72c380', '#6f7a8a', '#f7cb38', '#5a8022', '#2c7282'];
@@ -572,6 +547,51 @@
                 $('#reportrange').data('daterangepicker').remove();
             });
         });
+    </script>
+    <!-- form validation -->
+    <script src="js/validator/validator.js"></script>
+    <script>
+        // initialize the validator function
+        validator.message['date'] = 'not a real date';
+        validator.message['email'] = 'testeee';
+
+        // validate a field on "blur" event, a 'select' on 'change' event & a '.reuired' classed multifield on 'keyup':
+        $('form')
+            .on('blur', 'input[required], input.optional, select.required', validator.checkField)
+            .on('change', 'select.required', validator.checkField)
+            .on('keypress', 'input[required][pattern]', validator.keypress);
+
+        $('.multi.required')
+            .on('keyup blur', 'input', function () {
+                validator.checkField.apply($(this).siblings().last()[0]);
+            });
+
+        // bind the validation to the form submit event
+        //$('#send').click('submit');//.prop('disabled', true);
+
+        $('form').submit(function (e) {
+            e.preventDefault();
+            var submit = true;
+            // evaluate the form using generic validaing
+            if (!validator.checkAll($(this))) {
+                submit = false;
+            }
+
+            if (submit)
+                this.submit();
+            return false;
+        });
+
+        /* FOR DEMO ONLY */
+        $('#vfields').change(function () {
+            $('form').toggleClass('mode2');
+        }).prop('checked', false);
+
+        $('#alerts').change(function () {
+            validator.defaults.alerts = (this.checked) ? false : true;
+            if (this.checked)
+                $('form .alert').remove();
+        }).prop('checked', false);
     </script>
     <!-- /datepicker -->
 </body>

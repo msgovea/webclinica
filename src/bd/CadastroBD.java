@@ -26,7 +26,7 @@ public class CadastroBD {
 			possivelLogin = loginManipulado + cont;
 		}
 
-		String sql = "insert into acesso (login, senha) values (?,?)";
+		String sql = "insert into acesso (login, senha, status) values (?,?,?)";
 		try {
 			// prepared statement para inserção
 			PreparedStatement stmt = con.prepareStatement(sql);
@@ -35,6 +35,7 @@ public class CadastroBD {
 
 			stmt.setString(1, "teste005");
 			stmt.setString(2, "oi");
+			stmt.setInt	  (3, 0);
 
 		try{	// executa
 			stmt.execute();

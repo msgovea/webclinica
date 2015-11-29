@@ -5,11 +5,13 @@ public class Usuario implements Cloneable {
     protected String login;
     protected String senha;
     protected String nome;
+    protected boolean funcionario;
 
     public Usuario() {
         this.login = "";
         this.senha = "";
         this.nome = "";
+        this.funcionario = false;
     }
 
     public Usuario(String login, String senha) throws Exception {
@@ -56,6 +58,14 @@ public class Usuario implements Cloneable {
             this.senha = senha;
         } catch (Exception e) {
         };
+    }
+    
+    public boolean isFuncionario() {
+    	return this.funcionario;
+    }
+    
+    public void isFuncionario(boolean funcionario) {
+    	this.funcionario = funcionario;
     }
 
     public String getNome() {

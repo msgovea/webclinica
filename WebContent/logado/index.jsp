@@ -1,24 +1,42 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
-<%@page import ="java.sql.*,
-				bd.*,
-				conexao.Conexao,
-				logicalView.*,
-				model.*,
-				java.util.*"
+	pageEncoding="ISO-8859-1" import = "java.sql.*,
+										bd.*,
+										conexao.Conexao,
+										logicalView.*,
+										model.*,
+										java.util.*"
+%>
+<%if (request.getParameter("sair") != null)
+{
+	if (request.getParameter("sair").equals("logoff")) {
+		session.setAttribute("user", null);
+	}
+} 
 %>
 <%@include file="sessao.jsp"%>
 <%
+
+	
+
 	String pagina = "default";
+	String	nome = "null";
+	int acessoAdmin = 0;
+	
 	if (request.getParameter("pagina") != null)
 		pagina = request.getParameter("pagina");
-	String nome = Teste.user.getNome();
+	
+	if (session.getAttribute("user") != null){
+		Acesso usuarioLogado = (Acesso) session.getAttribute("user");
+		nome = usuarioLogado.getNome();
+		acessoAdmin = usuarioLogado.getAcesso();
+	}
+	 
 	if (nome.length() > 16) {
 		nome = nome.substring(0, 14) + "...";
 	}
 	
-	boolean funcionario = Teste.user.isFuncionario();
 	
+
 %>
 
 <!DOCTYPE html>
@@ -91,38 +109,40 @@
                                 <li><a href="?pagina=conteudo"><i class="fa fa-home"></i>Início</a></li>
                                 <li><a><i class="fa fa-edit"></i> Consultas <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu" style="display: none">
-                                        <li><a href="?pagina=consulta">Marcar Consulta</a>
+                                        <li><a href="?pagina=marcarConsulta">Marcar Consulta</a>
                                         </li>
-                                        <li><a href="form_advanced.html">Desmarcar Consulta</a>
+                                        <li><a href="?pagina=desmarcarConsulta">Desmarcar Consulta</a>
                                         </li>
-                                        <li><a href="form_validation.html">Pesquisar Consulta</a>
+                                        <li><a href="?pagina=pesquisaConsulta">Pesquisar Consulta</a>
                                         </li>
                                     </ul>
                                 </li>
                                 <li><a><i class="fa fa-desktop"></i> Resultados Consultas <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu" style="display: none">
-                                        <li><a href="general_elements.html">General Elements</a>
+                                        <li><a href="?pagina=resultadoConsulta">Resultado Consulta</a>
                                         </li>
-                                        <li><a href="media_gallery.html">Media Gallery</a>
+                                        <li><a href="?pagina=observacaoConsulta">Observação Consulta</a>
                                         </li>
 
                                     </ul>
                                 </li>
-                                <li><a><i class="fa fa-cog"></i> Administrativo <span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu" style="display: none">
-                                        <li><a href="?pagina=usuarios2">Contas Ativas</a>
-                                        </li>
-                                        <li><a href="?pagina=usuarios">Contas Inativas</a>
-                                        </li>
-                                    </ul>
-                                </li>
+                                <%if (acessoAdmin == 3) {
+                                out.print("<li><a><i class=\"fa fa-cog\"></i> Administrativo <span class=\"fa fa-chevron-down\"></span></a>\n" +
+                                    "<ul class=\"nav child_menu\" style=\"display: none\">\n" +
+                                        "<li><a href=\"?pagina=usuariosAtivos\">Contas Ativas</a>\n" +
+                                        "</li>\n" +
+                                        "<li><a href=\"?pagina=usuariosInativos\">Contas Inativas</a>\n" +
+                                        "</li>\n" +
+                                    "</ul>\n" +
+                                "</li>");
+                                } %>
                                 <li><a><i class="fa fa-user"></i> Perfil <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu" style="display: none">
                                         <li><a href="?pagina=alterarDados">Editar Perfil</a>
                                         </li>
                                         <li><a href="index.jsp?pagina=excluirPerfil">Excluir Perfil</a>
                                         </li>
-                                        <li><a href="other_charts.html">Sair</a>
+                                        <li><a href="?sair=logoff">Sair</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -154,12 +174,12 @@
                                     <li><a href="?pagina=alterarDados">  Editar Perfil</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:;">
+                                        <a href="index.jsp?pagina=excluirPerfil">
                                             <span class="badge bg-red pull-right">DEFINITIVO</span>
                                             <span>Excluir Perfil</span>
                                         </a>
                                     </li>
-                                    <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i> Sair</a>
+                                    <li><a href="?sair=logoff"><i class="fa fa-sign-out pull-right"></i> Sair</a>
                                     </li>
                                 </ul>
                             </li>
@@ -190,11 +210,11 @@
             	<%@include file="conteudo2.jsp" %>
             	<% break;
 
-            	case "usuarios": %>
+            	case "usuariosInativos": %>
             	<%@include file="usuarios.jsp" %>
             	<% break;
             	
-            	case "usuarios2": %>
+            	case "usuariosAtivos": %>
             	<%@include file="usuarios2.jsp" %>
             	<% break;	
             	

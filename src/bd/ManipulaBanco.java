@@ -5,34 +5,38 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import conexao.Conexao;
+
 public class ManipulaBanco {
 	private Connection con;
 	
-	public ManipulaBanco() {
-	     new ConexaoMySQL();
-		this.con = ConexaoMySQL.getConexaoMySQL();
+	public ManipulaBanco() throws Exception {
+	    Conexao conexao = new Conexao();
+		this.con = conexao.getConnection();
 	   }
 
-	public void adiciona(String nome, String idade) {
-	    String sql = "insert into dados " + "(nome, idade)" + " values (?,?)";
+	public void adiciona(String nome, String idade) throws SQLException {
+		String sql = "insert into pacientes" +
+                " (nome,cep,numero,complemento,rg,cpf,nascimento)" +
+                " values (?,?,?,?,?,?,?)";
+        PreparedStatement stmt = con.prepareStatement(sql);
 
-	    try {
-	        // prepared statement para inserção
-	        PreparedStatement stmt = con.prepareStatement(sql);
+        // preenche os valores
+        stmt.setString(1, "Caelum");
+        stmt.setInt(2, 230);
+        stmt.setInt(3, 230);
+        stmt.setString(4, "Caelum");
+        stmt.setString(5, "Caelum");
+        stmt.setString(6, "Caelum");
+        stmt.setString(7, "Caelum");
+        
+        // executa
+        stmt.execute();
+        stmt.close();
 
-	        // seta os valores
+        System.out.println("Gravado!");
 
-	        stmt.setString(1, nome);
-	        stmt.setString(2, idade);
-	        
-	        // executa
-	        stmt.execute();
-	        stmt.close();
-	        System.out.println("Escrita em banco efetuada com sucesso!");
-	    } catch (SQLException e) {
-	        throw new RuntimeException(e);
-	    }
-	    ConexaoMySQL.FecharConexao();
+        con.close();
 	}
 	
 	public boolean seleciona(String idade)

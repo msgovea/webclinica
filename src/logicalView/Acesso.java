@@ -3,14 +3,86 @@ package logicalView;
 public class Acesso {
 
     protected int id;
-    protected String login;
     protected int status;
     protected int acesso;
+    protected String numero;
+	protected String login;
     protected String nome;
     protected String rg;
     protected String cpf;
+    protected String cep;
+    protected String complemento;
+    protected String recsenha;
     protected String nascimento;
     protected String telefone;
+    protected String ddd;
+   	protected String senha;
+    
+   
+
+
+
+   	
+	public Acesso(int id, String login) throws Exception {
+        this.id = id;
+        this.login = login;
+    }
+    
+	 public String getSenha() {
+		 return senha;
+	 }
+
+
+
+
+	 public void setSenha(String senha) {
+		 this.senha = senha;
+	 }
+
+	 public String getDdd() {
+		return ddd;
+	 }
+
+
+
+
+	public void setDdd(String ddd) {
+		this.ddd = ddd;
+	}
+ 
+    
+    public String getNumero() {
+		return numero;
+	}
+
+	public void setNumero(String numero) {
+		this.numero = numero;
+	}
+    
+    public String getCep() {
+		return cep;
+	}
+
+	public void setCep(String cep) {
+		this.cep = cep;
+	}
+
+	public String getComplemento() {
+		return complemento;
+	}
+
+	public void setComplemento(String complemento) {
+		this.complemento = complemento;
+	}
+
+	public String getRecsenha() {
+		return recsenha;
+	}
+
+	public void setRecsenha(String recsenha) {
+		this.recsenha = recsenha;
+	}
+
     
     public String getRg() {
 		return rg;
@@ -69,11 +141,6 @@ public class Acesso {
 	public void setStatus(int status) {
 		this.status = status;
 	}
-
-	public Acesso(int id, String login) throws Exception {
-        this.id = id;
-        this.login = login;
-    }
 
     public int getId() {
 		return id;

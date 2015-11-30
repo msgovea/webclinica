@@ -11,12 +11,33 @@ import metodosExternos.Criptografia;
 
 public class CadastroBD {
 	private Connection con;
+	private ResultSet rs;
 
 	public CadastroBD() throws Exception {
 		this.con = new Conexao().getConnection();
 	}
 
-	public String adiciona(String possivelLogin, String senha, String nome, String email, String rg, String cpf, String cep, String endereco, String numero, String ddd, String telefone, String datanascimento, String recsenha)
+	public String insertTelefone(int id, String ddd, String telefone) {
+		
+		try {
+			String sql = "insert into telefones (area, numero, idtipo, idpaciente) values (?,?,?,?)";
+			PreparedStatement stmt = con.prepareStatement(sql);
+			
+			stmt.setString(1, ddd);
+			stmt.setString(2, telefone);
+			stmt.setInt(3, 1);
+			stmt.setInt(4, id);
+			
+			stmt.execute();
+			return "SUCESSO";
+		} catch (SQLException e) {
+			return e.getMessage();
+		}
+		
+
+	}
+	
+	public String adiciona(String possivelLogin, String senha, String nome, String rg, String cpf, String cep, String complemento, String numero, String ddd, String telefone, String nascimento, String recsenha)
 			throws SQLException {
 
 		int cont = 0;
@@ -26,50 +47,48 @@ public class CadastroBD {
 			possivelLogin = loginManipulado + cont;
 		}
 
-		String sql = "insert into acesso (login, senha, status) values (?,?,?)";
+		String sql = "insert into acesso (login, senha, status, acesso,recsenha) values (?,?,?,?,?)";
 		try {
 			// prepared statement para inserção
 			PreparedStatement stmt = con.prepareStatement(sql);
 
 			// seta os valores
 
-			stmt.setString(1, "teste005");
-			stmt.setString(2, "oi");
-			stmt.setInt	  (3, 0);
+			stmt.setString(1, possivelLogin);
+			stmt.setString(2, Criptografia.md5(senha));
+			stmt.setInt	  (3, 0); //0 = ativo .. 1 = inativo
+			stmt.setInt	  (4, 0); //0 = paciente
+			stmt.setString(5, recsenha);
 
-		try{	// executa
 			stmt.execute();
-		} catch (SQLException e) {
-			return "run 1" + possivelLogin + Criptografia.md5(senha);
-		}
 			// procura...
 			sql = "select id from acesso where Login = ?";
 			stmt = con.prepareStatement(sql);
 			stmt.setString(1, possivelLogin);
-			ResultSet rs = stmt.executeQuery();
-			try{
+			rs = stmt.executeQuery();
 			rs.next();
-			} catch (SQLException e) {
-				return "run2";
-			}
+			
 			int id = rs.getInt("Id");
-
+			
+			
 			// adiciona em pacientes
-			sql = "insert into pacientes (id, nome, cep, numero, complemento) values (?,?,?,?,?)";
+			sql = "insert into pacientes (id,nome,cep,numero,complemento,rg,cpf,nascimento) values (?,?,?,?,?,?,?,?)";
 			stmt = con.prepareStatement(sql);
 
 			stmt.setInt(1, id);
 			stmt.setString(2, nome);
 			stmt.setString(3, cep);
 			stmt.setString(4, numero);
-			stmt.setString(5, "Perto dalí");
-			try{
+			stmt.setString(5, complemento);
+			stmt.setString(6, rg);
+			stmt.setString(7, cpf);
+			stmt.setString(8, nascimento);
 			stmt.execute();
-			} catch (SQLException e) {
-				return "run3";
-			}
+			
 			stmt.close();
-
+			
+			insertTelefone(id, ddd, telefone);
+			
 			return possivelLogin;
 		} catch (SQLException e) {
 			return "desconhecido";

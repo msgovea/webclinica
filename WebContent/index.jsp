@@ -1,13 +1,16 @@
-<%@page import="logicalView.Teste"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@page import ="java.sql.*,
 				bd.*,
-				conexao.Conexao,
-				logicalView.Usuario,
-				model.UsuarioDAO,
+				conexao.*,
+				logicalView.*,
+				model.*,
 				java.util.*"%>
-
+<%
+if (session.getAttribute("user") != null){
+	response.sendRedirect("./logado");
+}
+%>
 
 <!doctype html>
 
@@ -91,8 +94,10 @@
   
  	<%
  	//JSP CODE
+ 	int senha = 0;
+ 	String possivelLogin = "";
  	Calendar cal = Calendar.getInstance();
- 	Boolean valido = true;
+ 	Boolean valido = true, cadValido = true, cadEfetuado = false;
  	String validoRec[] = new String[3];
  	String botao = "logar";
     if (request.getParameter("botao") != null){
@@ -107,16 +112,15 @@
 		//RECSENHA
 		String email = request.getParameter("emailRec");
 		String recsenha = request.getParameter("recsenha");
-		
+		//aqui
 		if (email != null && recsenha != null){
-			if (!email.equalsIgnoreCase("mateus.sauer@gmail.com")) {
+			String senhaRecuperada = usrDAO.recSenhaAcesso(email, recsenha);
+			if (senhaRecuperada.equals("ERRO")) {
 	            validoRec[0] = "email";
-	        } else if (!recsenha.equalsIgnoreCase("123456")) {
-	            validoRec[0] = "recchave";
 	        } else {
 	        	validoRec[0] = "valido";
-	        	validoRec[1] = "login";
-	        	validoRec[2] = "senha";
+	        	validoRec[1] = email;
+	        	validoRec[2] = senhaRecuperada;
 	        }
 		}
 	    
@@ -128,20 +132,13 @@
 	    String password = request.getParameter("senha");
 	    
 	    if (login != null && password != null){
-	    	%><script>alert("<% out.print(login + password); %>")</script><%
-	        if (!usrDAO.validaLoginAcesso(login)) {
-	            valido = false;
-	        } else if (!usrDAO.validaSenhaAcesso(login, password)) {
+	    	int id = usrDAO.validaSenhaAcesso(login, password);
+	        if (id == 0) {
 	            valido = false;
 	        } else {
-	        	usr.setLogin(login);
-	        	usr.setSenha(password);
-	        	usr.setNome("Mateus Sauer");
-	        	Teste.user.setNome("Mateus Sauer Govêa");
-	        	//out.println("<script>alert(\"" + Teste.user.getNome() + "\");</script>");
-	        	session.setAttribute("login", login);
-		        session.setAttribute("senha", password);
-	            response.sendRedirect("logado/index.jsp");
+	        	ListaAcessoDAO testeAcesso = new ListaAcessoDAO();
+	        	session.setAttribute("user", testeAcesso.selecionaAcesso(testeAcesso.selectAcesso(id)));
+	           	response.sendRedirect("logado/index.jsp");
 	        }
 	    }
 	    
@@ -149,7 +146,6 @@
 	    try {
 	    	//CADASTRO
 		   	if (request.getParameter("nome")!= null &&
-		   		request.getParameter("email")!= null &&
 		   		request.getParameter("rg")!= null &&
 		   		request.getParameter("cep")!= null &&
 		   		request.getParameter("datanascimento")!= null &&
@@ -157,46 +153,61 @@
 				request.getParameter("endereco")!= null &&
 				request.getParameter("numero")!= null &&
 				request.getParameter("telefone")!= null &&
-				request.getParameter("recsenha")!= null) {
+				request.getParameter("recsenha")!= null) 
+		   	{
+		   		if (	!request.getParameter("nome").equals("") &&
+				   		!request.getParameter("rg").equals("") &&
+				   		!request.getParameter("cep").equals("") &&
+				   		!request.getParameter("datanascimento").equals("") &&
+				   		!request.getParameter("cpf").equals("") &&
+						!request.getParameter("endereco").equals("") &&
+						!request.getParameter("numero").equals("") &&
+						!request.getParameter("telefone").equals("") &&
+						!request.getParameter("recsenha").equals(""))
+		   		{
 												
 		    
-			    String possivelLogin = request.getParameter("nome");
-				String[] vetordeString = possivelLogin.split(" ");
-				String nome = vetordeString[0];
-				String sobrenome = vetordeString[vetordeString.length - 1];
-		
-				if (nome.equals(sobrenome))
-					possivelLogin = nome;
-				else
-					possivelLogin = nome + "." + sobrenome;
-				
-				possivelLogin = possivelLogin.toLowerCase();
-		
-				String[] telefone = request.getParameter("telefone").split("\\)");
-				String txtDDD = telefone[0].replaceAll("\\(", ""); //talvez "\\("
-		 		String txtTelefone = telefone[1];
-				CadastroBD cbd = new CadastroBD();
-				int senha = new Random().nextInt(89999999) + 10000000;
-				possivelLogin = cbd.adiciona(possivelLogin,
-											String.valueOf(senha),
-											request.getParameter("nome"),
-											request.getParameter("email"),
-											request.getParameter("rg"),
-											request.getParameter("cpf"), 
-											request.getParameter("cep"),
-											request.getParameter("endereco"),
-											request.getParameter("numero"),
-											txtDDD,
-											txtTelefone,
-											request.getParameter("datanascimento"),
-											request.getParameter("recsenha"));
-		
-				if (possivelLogin != null) {
-					out.print("Funcionário cadastrado com sucesso\n\nSeu login é: " + possivelLogin + "\nSua senha é: " + senha);
-				} else {
-					out.print("Erro ao cadastrar, verifique os dados");
+				    possivelLogin = request.getParameter("nome");
+					String[] vetordeString = possivelLogin.split(" ");
+					String nome = vetordeString[0];
+					String sobrenome = vetordeString[vetordeString.length - 1];
+			
+					if (nome.equals(sobrenome))
+						possivelLogin = nome;
+					else
+						possivelLogin = nome + "." + sobrenome;
+					
+					possivelLogin = possivelLogin.toLowerCase();
+			
+					String[] telefone = request.getParameter("telefone").split("\\)");
+					String txtDDD = telefone[0].replaceAll("\\(", ""); //talvez "\\("
+			 		String txtTelefone = telefone[1];
+					CadastroBD cbd = new CadastroBD();
+					senha = new Random().nextInt(89999999) + 10000000;
+					
+					possivelLogin = cbd.adiciona(possivelLogin,
+												String.valueOf(senha),
+												request.getParameter("nome"),
+												request.getParameter("rg"),
+												request.getParameter("cpf"), 
+												request.getParameter("cep"),
+												request.getParameter("endereco"),
+												request.getParameter("numero"),
+												txtDDD,
+												txtTelefone,
+												request.getParameter("datanascimento"),
+												request.getParameter("recsenha"));
+			
+					if (possivelLogin != null) {
+						cadEfetuado = true;
+					} else {
+						out.print("Erro ao cadastrar, verifique os dados");
+					}
 				}
-			}
+		   		else {
+		   		cadValido = false;	
+		   		}
+		   	}
 	    }catch (SQLException e) {
 	    	out.print("ERRO NO CADASTRO");
 	    }catch (Exception e) {
@@ -279,12 +290,21 @@
         
         <div class="mdl-layout__tab-panel <%if (botao.equals("cadastro"))out.print("is-active");%>" id="cadastro">
         
-        <% if (!valido) {%>
+        <% if (!cadValido) {%>
           <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
             <div class="mdl-card mdl-cell mdl-cell--12-col">
               <div class="mdl-card__supporting-text">
-                <h4><font color="red">Usuário ou senha inválido</font></h4>
-                Por favor entre novamente, usuário ou senha inválido<br> Caso não lembre seus dados você pode tentar recuperar sua senha.
+                <h4><font color="red">Dados inválido</font></h4>
+                Por favor preencha os campos novamente<br> Nenhum campo deve ser deixado em branco.
+              </div>
+            </div>
+          </section>
+          <% } %>
+          <% if (cadEfetuado) {%>
+          <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
+            <div class="mdl-card mdl-cell mdl-cell--12-col">
+              <div class="mdl-card__supporting-text">
+				<center><h4><font color="green">Cadastro Efetuado!</font></h4> <h5>Usuário: <%= possivelLogin %><br>Senha: <%= senha %></center></h5>
               </div>
             </div>
           </section>
@@ -303,9 +323,10 @@
 								class="mdl-textfield__error">Input is not a number!</span>	
 						</div>
 						<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-							<input class="mdl-textfield__input" type="email" id="sample4" name="email"> 
-							<label class="mdl-textfield__label" for="sample4">E-mail</label> 
-							<span class="mdl-textfield__error">Digite um e-mail válido</span>	
+							<input class="mdl-textfield__input" type="text" id="cpf" name="cpf" onclick="zeraCPF()" value="000.000.000-00"> 
+							<label
+								class="mdl-textfield__label" for="cpf">CPF</label> <span
+								class="mdl-textfield__error">Input is not a number!</span>
 						</div>
 						<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
 							<input class="mdl-textfield__input" type="text" pattern=".{1,}" value="00.000.000-0" 
@@ -328,20 +349,15 @@
 							<label class="mdl-textfield__label" for="sample5">Data de Nascimento</label>
 							<span class="mdl-textfield__error">Digite um valor entre 01-01-1900 à <%out.print(cal.get(Calendar.DAY_OF_MONTH) + "-" + (cal.get(Calendar.MONTH)+1) + "- " + cal.get(Calendar.YEAR)); %></span>
 						</div>
-						<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-							<input class="mdl-textfield__input" type="text" id="cpf" name="cpf" onclick="zeraCPF()" value="000.000.000-00"> 
-							<label
-								class="mdl-textfield__label" for="cpf">CPF</label> <span
-								class="mdl-textfield__error">Input is not a number!</span>
-						</div>
+						
 						<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
 							<input class="mdl-textfield__input" type="text" pattern=".{1,}"
 								id="sample4" name="endereco"> <label
-								class="mdl-textfield__label" for="sample4">Endereço</label> <span
+								class="mdl-textfield__label" for="sample4">Complemento</label> <span
 								class="mdl-textfield__error">Input is not a number!</span>
 						</div>
 						<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-							<input class="mdl-textfield__input" type="text" pattern=".{1,}"
+							<input class="mdl-textfield__input" type="text" pattern=".{1,6}"
 								id="sample4" name="numero"> <label
 								class="mdl-textfield__label" for="sample4">Numero</label> <span
 								class="mdl-textfield__error">Input is not a number!</span>
@@ -407,10 +423,7 @@
                 <% 
                 switch(validoRec[0]) {
                 	case "email" :
-                		out.print("<h4><font color=\"red\">E-mail Inválido</font></h4> Por favor entre com os dados novamente, e-mail inválido");
-                		break;
-                	case "recchave" :
-                		out.print("<h4><font color=\"red\">Chave de Recuperação Inválida</font></h4> Por favor entre com os dados novamente, chave de recuperação inválida");
+                		out.print("<h4><font color=\"red\">Login ou Chave de Recuperação Inválido</font></h4> Por favor entre com os dados novamente.");
                 		break;
                 	case "valido" :
                 		out.print("<center><h4><font color=\"green\">Dados recuperados!</font></h4> <h5>Usuário: " + validoRec[1] + "<br>Senha: " + validoRec[2]+"</center></h5>");
@@ -433,9 +446,9 @@
                 <h4>Recupere sua Senha</h4>
                 <form method="post">
 						<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-							<input class="mdl-textfield__input" type="email" id="emailRec" pattern=".{5,}" name="emailRec"> 
-							<label class="mdl-textfield__label" for="emailRec">E-mail</label> 
-							<span class="mdl-textfield__error">Digite seu e-mail usado no cadastro</span>	
+							<input class="mdl-textfield__input" type="text" id="emailRec" pattern=".{5,}" name="emailRec"> 
+							<label class="mdl-textfield__label" for="emailRec">Login</label> 
+							<span class="mdl-textfield__error">Digite seu login usado no cadastro</span>	
 						</div><br>
 						<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
 							<input class="mdl-textfield__input" type="tel" pattern=".{6,}" id="recsenha" name="recsenha">

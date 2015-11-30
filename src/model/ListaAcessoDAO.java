@@ -19,9 +19,30 @@ public class ListaAcessoDAO {
 
 	}
 
+	public Acesso selectAcesso(int id) {
+
+		String sql = "select * from acesso where id=" + id;
+		Acesso elemento = new Acesso();
+		try {
+			PreparedStatement stmt = conexao.prepareStatement(sql);
+			rs = stmt.executeQuery();
+			if (rs.next()) {
+				elemento.setId(rs.getInt("Id"));
+				elemento.setLogin(rs.getString("Login"));
+				elemento.setStatus(rs.getInt("Status"));
+				elemento.setAcesso(rs.getInt("Acesso"));
+				elemento.setRecsenha(rs.getString("recsenha"));
+				elemento.setSenha(rs.getString("senha"));
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+
+		return elemento;
+	}
+
 	public boolean validaIdFuncionario(int id) {
-		String sql = "select Id from funcionarios where Id = ?";
-		int valor = 0;
+		String sql = "SELECT Id FROM funcionarios WHERE Id = ?";
 
 		try {
 			PreparedStatement stmt = conexao.prepareStatement(sql); // Processando
@@ -40,14 +61,11 @@ public class ListaAcessoDAO {
 	}
 
 	public int selectCargo(int idFuncionario) {
-		String sql = "select Id,Cargo from funcionarios where Id = ?";
+		String sql = "SELECT Id,Cargo FROM funcionarios WHERE Id = ?";
 		int valor = 0;
 		try {
-			PreparedStatement stmt = conexao.prepareStatement(sql); // Processando
-																	// a query
-			stmt.setInt(1, idFuncionario); // o número 1 é o ponto de
-											// interrogação que indica a ordem
-											// do elemento buscado
+			PreparedStatement stmt = conexao.prepareStatement(sql);
+			stmt.setInt(1, idFuncionario);
 			rs = stmt.executeQuery();
 			if (rs.next())
 				if (idFuncionario == rs.getInt("Id")) {
@@ -61,11 +79,11 @@ public class ListaAcessoDAO {
 	}
 
 	public ArrayList<Acesso> selectAcesso() {
-		String sql = "select Id,Login,Status,Acesso from acesso";
+		String sql = "SELECT * FROM acesso";
 		ArrayList<Acesso> lista = new ArrayList<Acesso>();
 		try {
-			PreparedStatement stmt = conexao.prepareStatement(sql); // Processando
-																	// a query
+			PreparedStatement stmt = conexao.prepareStatement(sql);
+
 			rs = stmt.executeQuery();
 			while (rs.next()) {
 				Acesso elemento = new Acesso();
@@ -73,6 +91,8 @@ public class ListaAcessoDAO {
 				elemento.setLogin(rs.getString("Login"));
 				elemento.setStatus(rs.getInt("Status"));
 				elemento.setAcesso(rs.getInt("Acesso"));
+				elemento.setRecsenha(rs.getString("recsenha"));
+				elemento.setSenha(rs.getString("senha"));
 				lista.add(elemento);
 			}
 		} catch (SQLException e) {
@@ -81,30 +101,27 @@ public class ListaAcessoDAO {
 		return lista;
 	}
 
-	public Acesso selecionaAcesso(Acesso acesso){
+	public Acesso selecionaAcesso(Acesso acesso) {
 		switch (acesso.getAcesso()) {
-			case 0:
-				acesso = selectPaciente(acesso);
-				break;
-			case 1:
-				acesso = selectFuncionario(acesso);
-				break;
-			case 2:
-				acesso = selectProfissionaisSaude(acesso);
-				break;
-			case 3:
-				acesso = selectFuncionario(acesso);
-				break;
-			case 4:
-				acesso = selectProfissionaisSaude(acesso);
-				break;
-			default:
-				acesso = selectPaciente(acesso);
-				break;
+		case 0:
+			acesso = selectAcesso(acesso, "pacientes");
+			break;
+		case 1:
+			acesso = selectAcesso(acesso, "funcionarios");
+			break;
+		case 2:
+			acesso = selectAcesso(acesso, "profissionaissaude");
+			break;
+		case 3:
+			acesso = selectAcesso(acesso, "funcionarios");
+			break;
+		default:
+			acesso = selectAcesso(acesso, "pacientes");
+			break;
 		}
 		return acesso;
 	}
-	
+
 	public ArrayList<Acesso> listaContas() {
 		ArrayList<Acesso> lista = selectAcesso();
 
@@ -115,19 +132,23 @@ public class ListaAcessoDAO {
 
 	}
 
-	public Acesso selectPaciente(Acesso elemento) {
+	public Acesso selectAcesso(Acesso elemento, String selecao) {
 
-		String sql = "select Nome,RG,CPF,Nascimento from pacientes where id=" + elemento.getId();
-		//String sql = "select Nome,CEP,Numero,Complemento from pacientes where id=" + elemento.getId();
+		String sql = "SELECT * FROM " + selecao + " WHERE id=" + elemento.getId();
 
 		try {
-			PreparedStatement stmt = conexao.prepareStatement(sql); 
+			PreparedStatement stmt = conexao.prepareStatement(sql);
 			rs = stmt.executeQuery();
 			if (rs.next()) {
 				elemento.setNome(rs.getString("Nome"));
 				elemento.setCpf(rs.getString("cpf"));
 				elemento.setRg(rs.getString("Rg"));
+				elemento.setNumero(rs.getString("Numero"));
+				elemento.setCep(rs.getString("cep"));
+				elemento.setComplemento(rs.getString("complemento"));
 				elemento.setNascimento(rs.getString("nascimento"));
+				
+				selectTelefone(elemento);
 			}
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
@@ -135,67 +156,24 @@ public class ListaAcessoDAO {
 
 		return elemento;
 	}
-	
-	public Acesso selectFuncionario(Acesso elemento) {
 
-		String sql = "select Nome,RG,CPF,Nascimento from funcionarios where id=" + elemento.getId();
-		//String sql = "select Nome,CEP,Numero,Complemento from pacientes where id=" + elemento.getId();
+	public String selectTelefone(Acesso elemento) {
 
 		try {
-			PreparedStatement stmt = conexao.prepareStatement(sql); 
+			String sql = "SELECT * FROM telefones WHERE idPaciente=" + elemento.getId();
+			PreparedStatement stmt = conexao.prepareStatement(sql);
 			rs = stmt.executeQuery();
 			if (rs.next()) {
-				elemento.setNome(rs.getString("Nome"));
-				elemento.setCpf(rs.getString("cpf"));
-				elemento.setRg(rs.getString("Rg"));
-				elemento.setNascimento(rs.getString("nascimento"));
+				elemento.setDdd(rs.getString("area"));
+				elemento.setTelefone(rs.getString("numero"));
 			}
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			return e.getMessage();
 		}
+		return "";
 
-		return elemento;
 	}
+
 	
-	public Acesso selectProfissionaisSaude(Acesso elemento) {
 
-		String sql = "select Nome,RG,CPF,Nascimento from profissionaissaude where id=" + elemento.getId();
-		//String sql = "select Nome,CEP,Numero,Complemento from pacientes where id=" + elemento.getId();
-
-		try {
-			PreparedStatement stmt = conexao.prepareStatement(sql); 
-			rs = stmt.executeQuery();
-			if (rs.next()) {
-				elemento.setNome(rs.getString("Nome"));
-				elemento.setCpf(rs.getString("cpf"));
-				elemento.setRg(rs.getString("Rg"));
-				elemento.setNascimento(rs.getString("nascimento"));
-			}
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
-
-		return elemento;
-	}
-
-	public Acesso selectAcesso(int id) {
-
-		String sql = "select id,login,status,acesso from acesso where id=" + id;
-		Acesso elemento = new Acesso();
-		try {
-			PreparedStatement stmt = conexao.prepareStatement(sql); 
-			rs = stmt.executeQuery();
-			if (rs.next()) {
-				elemento.setId(rs.getInt("Id"));
-				elemento.setLogin(rs.getString("Login"));
-				elemento.setStatus(rs.getInt("Status"));
-				elemento.setAcesso(rs.getInt("Acesso"));
-			}
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
-
-		return elemento;
-	}
-	
 }

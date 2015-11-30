@@ -7,12 +7,26 @@
 				model.*,
 				java.util.*"
 %>
+
+<%
+	if(request.getParameter("deleta") != null){
+			UpdateDAO deleta = new UpdateDAO();
+			deleta.updateStatus(request.getParameter("deleta"), false);
+	}
+%>
+
 <div class="right_col" role="main">
                 <div class="">
                     <div class="page-title">
-                        <div class="title_left">
-                            <h3>Contas ativas</h3>
-                        </div>
+                   		<div class="animated flipInY col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="tile-stats">
+                                <div class="icon"><i class="fa fa-caret-square-o-right"></i>
+                                </div>
+                                <div class="count">Usuários Ativos</div>
+
+                                <h3>Veja e edite usuários aqui</h3>
+                            </div>
+                       	</div>
                     </div>
                     <div class="clearfix"></div>
 
@@ -54,10 +68,7 @@
                                         				tipo = "<button type=\"button\" class=\"btn btn-warning btn-xs\">Saúde</button>";
                                         				break;
                                         			case 3:
-                                        				tipo = "<button type=\"button\" class=\"btn btn-info btn-xs\">Funcionário</button>";
-                                        				break;
-                                        			case 4:
-                                        				tipo = "<button type=\"button\" class=\"btn btn-warning btn-xs\">Saúde</button>";
+                                        				tipo = "<button type=\"button\" class=\"btn btn-danger btn-xs\">DEVELOPER</button>";
                                         				break;
                                         			default :
                                         				tipo = "<button type=\"button\" class=\"btn btn-danger btn-xs\">ERRO</button>";
@@ -66,14 +77,14 @@
 	                                        		"<tr class=\"even pointer\">\n" +
 	                                                	"<td class=\"a-center \">\n" +
 		                                                    "<a href=\"?pagina=alterarDados&id=" + acesso.getId() + "\" class=\"btn btn-info btn-xs\"><i class=\"fa fa-pencil\"></i></a>\n" +
-		                                                    "<a class=\"btn btn-danger btn-xs\"><i class=\"fa fa-trash-o\"></i></a>\n" +
+		                                                    "<a href=\"?pagina=usuariosAtivos&deleta="+ acesso.getId() +"\" class=\"btn btn-danger btn-xs\"><i class=\"fa fa-trash-o\"></i></a>\n" +
 		                                                "</td>\n" +
 		                                                "<td>" + acesso.getId() + "</td>\n" +
 		                                                "<td>" + acesso.getNome() + "</td>\n" +
 		                                                "<td>" + acesso.getRg() + "</td>\n" +
 		                                                "<td>" + acesso.getCpf() + "</td>\n" +
 		                                                "<td>" + acesso.getNascimento() + "</td>\n" +
-		                                                "<td>(19)981407342</td>\n" +
+		                                                "<td>(" + acesso.getDdd() + ")" + acesso.getTelefone() + "</td>\n" +
 		                                                "<td>" + tipo + " </td>\n" +
 	                                            	"</tr>");
                                         		}

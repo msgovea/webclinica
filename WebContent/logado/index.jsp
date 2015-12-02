@@ -66,6 +66,8 @@
 
 	<link href="css/datatables/tools/css/dataTables.tableTools.css" rel="stylesheet">
 
+	<script type="text/javascript" src="ajax.js"></script>
+        <script type="text/javascript" src="jquery-1.3.2.js"></script>
     <script src="js/jquery.min.js"></script>
 
 </head>
@@ -196,6 +198,10 @@
             <%switch (pagina) {
             	case "conteudo": %>
             	<%@include file="conteudo.jsp" %>
+            	<% break;
+            	
+            	case "marcarConsulta": %>
+            	<%@include file="marcarConsulta.jsp" %>
             	<% break;
             	
             	case "alterarDados": %>

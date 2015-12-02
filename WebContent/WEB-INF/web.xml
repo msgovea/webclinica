@@ -9,4 +9,18 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  <error-page>  
+    <exception-type>java.lang.Exception</exception-type>  
+    <location>/logado/erro.jsp</location>  
+  </error-page>  
+  
+  <error-page>  
+    <error-code>404</error-code>  
+    <location>/logado/404.jsp</location>  
+  </error-page>    
+      
+  <error-page>  
+    <error-code>500</error-code>  
+    <location>/logado/500.jsp</location>  
+  </error-page>  
 </web-app>

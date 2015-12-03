@@ -20,11 +20,6 @@
                                 <div class="count" align="center">MARCAR CONSULTA</div>
                             </div>
                         </div></a>
-                        <a href="?pagina=desmarcarConsulta"><div class="animated flipInY col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                            <div class="tile-stats">
-                                <div class="count" align="center">DESMARCAR CONSULTA</div>
-                            </div>
-                        </div></a>
                         <a href="?pagina=pesquisarConsulta"><div class="animated flipInY col-lg-6 col-md-6 col-sm-6 col-xs-12">
                             <div class="tile-stats">
                                 <div class="count" align="center">PESQUISAR CONSULTA</div>
@@ -33,11 +28,6 @@
                         <a href="?pagina=resultadoConsulta"><div class="animated flipInY col-lg-6 col-md-6 col-sm-6 col-xs-12">
                             <div class="tile-stats">
                                 <div class="count" align="center">RESULTADO CONSULTA</div>
-                            </div>
-                        </div></a>
-                        <a href="?pagina=observacaoConsulta"><div class="animated flipInY col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                            <div class="tile-stats">
-                                <div class="count" align="center">OBSERVAÇÃO CONSULTA</div>
                             </div>
                         </div></a>
                         <a href="?pagina=alterarDados"><div class="animated flipInY col-lg-6 col-md-6 col-sm-6 col-xs-12">

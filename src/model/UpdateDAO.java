@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 import conexao.Conexao;
 import logicalView.Acesso;
-import metodosExternos.Criptografia;
 
 public class UpdateDAO {
 	private Connection conexao = null;
@@ -19,6 +18,49 @@ public class UpdateDAO {
 	public UpdateDAO() throws Exception {
 		conexao = new Conexao().getConnection();
 		listaDAO = new ListaAcessoDAO();
+	}
+	
+	public boolean deletaConsulta(String id) {
+		try {
+			PreparedStatement stmt;
+			String sql = "SELECT * FROM consultas WHERE id = " + id;
+			stmt = conexao.prepareStatement(sql);
+			rs = stmt.executeQuery();
+			if (rs.next()){
+				int idDisponibilidade = rs.getInt("idDisponibilidade");
+			
+				System.err.println(id);
+				stmt.close();
+				
+				sql = "UPDATE disponibilidades SET Livre = 1 WHERE Id = "+ idDisponibilidade;
+				stmt = conexao.prepareStatement(sql);
+				stmt.executeUpdate();
+				stmt.close();
+				sql = "DELETE FROM consultas WHERE id = " + id;
+				stmt = conexao.prepareStatement(sql);
+				stmt.executeUpdate();
+				stmt.close();
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return false;
+	}
+	
+	public boolean updateDisponibilidade(int idDisponibilidade) {
+		try {
+			String sql = "UPDATE disponibilidades SET Livre = 0 WHERE Id = "+ idDisponibilidade;
+			PreparedStatement stmt = conexao.prepareStatement(sql);
+			stmt.executeUpdate();
+			stmt.close();
+			return true;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	public String atualizaUser(int id, Acesso novo) {

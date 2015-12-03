@@ -52,17 +52,8 @@
                         <p>Não sabe como fazer isso? <a href="#">Clique aqui</a>
                         </p>
                         <div class="mid_center">
-                            <h3>Search</h3>
-                            <form>
-                                <div class="col-xs-12 form-group pull-right top_search">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Search for...">
-                                        <span class="input-group-btn">
-                            <button class="btn btn-default" type="button">Go!</button>
-                        </span>
-                                    </div>
-                                </div>
-                            </form>
+                            <h3><a href="http://localhost:8080/Clinica_WEB/">PÁGINA INICIAL</a></h3>
+                            
                         </div>
                     </div>
                 </div>

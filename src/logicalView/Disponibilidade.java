@@ -11,6 +11,7 @@ public class Disponibilidade {
     protected int idClasse;
     protected int Livre;
     protected String nome;
+    protected String nomeEspecialidade;
     protected Date DiaDaSemana;
     protected Time Inicio;
     protected Time Fim;
@@ -34,6 +35,16 @@ public class Disponibilidade {
         this.Fim = null;
     }
 	
+	public String getNomeEspecialidade() {
+		return nomeEspecialidade;
+	}
+
+
+	public void setNomeEspecialidade(String nomeEspecialidade) {
+		this.nomeEspecialidade = nomeEspecialidade;
+	}
+
+
 	public int getIdClasse() {
 		return idClasse;
 	}

@@ -113,9 +113,9 @@
                                     <ul class="nav child_menu" style="display: none">
                                         <li><a href="?pagina=marcarConsulta">Marcar Consulta</a>
                                         </li>
-                                        <li><a href="?pagina=desmarcarConsulta">Desmarcar Consulta</a>
+                                        <li><a href="?pagina=pesquisarConsulta">Desmarcar Consulta</a>
                                         </li>
-                                        <li><a href="?pagina=pesquisaConsulta">Pesquisar Consulta</a>
+                                        <li><a href="?pagina=pesquisarConsulta">Pesquisar Consulta</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -123,7 +123,7 @@
                                     <ul class="nav child_menu" style="display: none">
                                         <li><a href="?pagina=resultadoConsulta">Resultado Consulta</a>
                                         </li>
-                                        <li><a href="?pagina=observacaoConsulta">Observação Consulta</a>
+                                        <li><a href="?pagina=resultadoConsulta">Observação Consulta</a>
                                         </li>
 
                                     </ul>
@@ -216,6 +216,18 @@
             	<%@include file="conteudo2.jsp" %>
             	<% break;
 
+            	case "pesquisarConsulta": %>
+            	<%@include file="pesquisarConsulta.jsp" %>
+            	<% break;
+            	
+            	case "observacaoConsulta": %>
+            	<%@include file="obs.jsp" %>
+            	<% break;
+            	
+            	case "resultadoConsulta": %>
+            	<%@include file="resultadoConsulta.jsp" %>
+            	<% break;
+            	
             	case "usuariosInativos": %>
             	<%@include file="usuarios.jsp" %>
             	<% break;

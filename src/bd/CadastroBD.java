@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import conexao.Conexao;
-import metodosExternos.Criptografia;
 
 public class CadastroBD {
 	private Connection con;
@@ -55,7 +54,7 @@ public class CadastroBD {
 			// seta os valores
 
 			stmt.setString(1, possivelLogin);
-			stmt.setString(2, Criptografia.md5(senha));
+			stmt.setString(2, senha);
 			stmt.setInt	  (3, 0); //0 = ativo .. 1 = inativo
 			stmt.setInt	  (4, 0); //0 = paciente
 			stmt.setString(5, recsenha);

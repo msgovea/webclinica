@@ -117,7 +117,7 @@
                             <div class="x_content"> 
                                 <div class="form-group">
                                     <div class="col-md-12 col-sm-12 col-xs-12">
-                                        <textarea class="resizable_textarea form-control"  style="width: 100%; overflow: hidden; word-wrap: break-word; resize: horizontal; height: 87px;"><%=consu.getRecomendacoes() %>
+                                        <textarea class="resizable_textarea form-control" disabled style="width: 100%; overflow: hidden; word-wrap: break-word; resize: horizontal; height: 87px;"><%=consu.getRecomendacoes() %>
                                         </textarea>
                                     </div>
                                 </div>
